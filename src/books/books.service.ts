@@ -9,7 +9,7 @@ import { UpdateBooksDto } from './interfaces/dto/update-books';
 export class BooksService {
   constructor(
     @InjectModel(Book.name) private BookModel: Model<BookDocument>,
-    @InjectConnection() private connection: Connection,
+    // @InjectConnection() private connection: Connection,
   ) {}
 
   public getAll(): Promise<BookDocument[]> {
@@ -17,12 +17,13 @@ export class BooksService {
   }
 
   public create(data: CreateBooksDto): Promise<BookDocument> {
+    // const book = new this.BookModel(data);
     const book = new this.BookModel(data);
     return book.save();
   }
 
   public delete( id: string): Promise<BookDocument>{
-    return this.BookModel.findOneAndRemove({ _id: id });
+    return this.BookModel.findOneAndRemove({ _id: id }).exec();
   }
 
   public update(id: string, data: UpdateBooksDto): Promise<BookDocument> {
