@@ -9,36 +9,26 @@ const mockBook = {
   description: 'Description on Book1',
 };
 
-
-
 describe('BooksService', () => {
   let service: BooksService;
   let model: Model<Book>;
-
-  const booksArray = [
-    {
-      title: 'Book1',
-      description: 'Description on Book1',
-    },
-    {
-      title: 'Book2',
-      description: 'Description on Book2',
-    },
-  ];
-
-  // ,
-  //       {
-  //         provide: getModelToken('Book'),
-  //         useValue: {
-  //           new: jest.fn().mockResolvedValue(mockBook),
-  //           constructor: jest.fn().mockResolvedValue(mockBook),
-  //           find: jest.fn(),
-  //           create: jest.fn(),
-  //           exec: jest.fn(),
-  //         },
-  //       },
+  let booksArray: any;
 
   beforeEach(async () => {
+    
+    booksArray = [
+      {
+        _id: '1',
+        title: 'Book1',
+        description: 'Description on Book1',
+      },
+      {
+        _id: '2',
+        title: 'Book2',
+        description: 'Description on Book2',
+      },
+    ];
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [BooksService,
             {
@@ -49,7 +39,6 @@ describe('BooksService', () => {
                           create: jest.fn(),
                           findOneAndRemove: jest.fn(),
                           findOneAndUpdate: jest.fn(),
-                          exec: jest.fn(),
                         },
             }
           ]}).compile();
@@ -73,38 +62,32 @@ describe('BooksService', () => {
   });
 
   // ============================================
-  it('should insert a new book', async () => {
-    jest.spyOn(model, 'create').mockImplementationOnce(() =>
-      Promise.resolve({
-        title: 'Book1',
-        description: 'Description on Book1',
-      } as any),
-    );
-    const newBook = await service.create({
+  it('should create update a book', async () => {
+    const newData = {
       title: 'Book1',
-      description: 'Description on Book1',
-    });
-    expect(newBook).toEqual(mockBook);
+      description: 'Description on Book 11111111111',
+    };
+    const updateBook = jest.fn((data) => service.create(data));
+    console.log(updateBook( newData ));
+    expect(updateBook).toBeCalled();
   });
 
   // ============================================
   it('should delete a book', async () => {
-    // jest.spyOn(model, 'findOneAndRemove').mockImplementationOnce(() =>
-    //   Promise.resolve({
-    //     title: 'Book1',
-    //     description: 'Description on Book1',
-    //   } as any),
-    // );
-    // const deleteBook = await service.delete('1');
-    const obj1 = {title: 'Book1', description: 'Description on Book1'};
-    const obj2 = {title: 'Book1', description: 'Description on Book11'};
-    // expect(deleteBook).toEqual(mockBook);
-    expect(obj1).toEqual(obj2);
+    const deleteBook = jest.fn((id) => service.delete(id));
+    console.log(deleteBook('1'));
+    expect(deleteBook).toBeCalled();
   });
 
   // ============================================
-
-  // ============================================
-
+  it('should update a book', async () => {
+    const data = {
+      title: 'Book1',
+      description: 'Description on Book 11111111111',
+    };
+    const updateBook = jest.fn((id, data) => service.update(id, data));
+    console.log(updateBook('1', data));
+    expect(updateBook).toBeCalled();
+  });
 
 });

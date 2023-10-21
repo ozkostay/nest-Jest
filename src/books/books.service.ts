@@ -17,13 +17,14 @@ export class BooksService {
   }
 
   public create(data: CreateBooksDto): Promise<BookDocument> {
-    // const book = new this.BookModel(data);
-    const book = new this.BookModel(data);
-    return book.save();
+    // const book = new this.BookModel({...data});
+    // return book.save();
+    const book = this.BookModel.create({...data});
+    return book;
   }
 
   public delete( id: string): Promise<BookDocument>{
-    return this.BookModel.findOneAndRemove({ _id: id }).exec();
+    return this.BookModel.findOneAndRemove({ _id: id });
   }
 
   public update(id: string, data: UpdateBooksDto): Promise<BookDocument> {
